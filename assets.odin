@@ -19,7 +19,17 @@ init_assets :: proc(folder_name: string) {
 	};
 }
 
-// loads a single texture that can get used
+// manually loads a texture from a full path you've provided, saves the texture under the texture_name provided
+load_texture_manual :: proc(file_name: string, texture_name: string) {
+    using global_assets;
+    
+    img := init_image(file_name);
+    textures[texture_name] = init_texture(&img);
+    
+    destroy_image(img);
+}
+
+// loads a single texture that gets added to the textures map
 load_texture :: proc(file_name: string) {
 	using global_assets;
 	
