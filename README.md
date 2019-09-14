@@ -26,7 +26,7 @@ You can run examples from the main folder via `odin run examples/example_name.od
 2. Download library dependencies into your odin/shared folder and follow their build steps
 	* [schlicht](https://github.com/Skytrias/schlicht)
 	* [odin-gl](https://github.com/vassvik/odin-gl) 
-	* [odin-gl_font](https://github.com/vassvik/odin-gl_font) 
+	* [odin-glfw](https://github.com/vassvik/odin-glfw) 
 	* [odin-stb](https://github.com/vassvik/odin-stb)
 	* ... more might follow
 3. Run `odin run main.odin` and output into a format your OS needs
