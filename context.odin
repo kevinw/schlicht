@@ -62,18 +62,20 @@ init_context :: proc(title: string, width, height: int, offset: Vec2 = {}) {
         
         //fmt.println(scale);
         
-        projection := ortho3d(0, cast(f32) width, cast(f32) height, 0, -1.0, 1.0);
+        //projection := ortho3d(0, cast(f32) width, cast(f32) height, 0, -1.0, 1.0);
         gl.UseProgram(global_context.primitive_shader.program);
-        gl.UniformMatrix4fv(global_context.primitive_shader.projection, 1, gl.FALSE, &projection[0][0]);
+        gl.UniformMatrix4fv(global_context.primitive_shader.
+                            projection, 1, gl.FALSE, &projection[0][0]);
     }
 	glfw.set_window_size_callback(window, resize_callback);
 	
-	glfw.make_context_current(window);
 	glfw.window_hint(glfw.CONTEXT_VERSION_MAJOR, 3);
-    glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 3);
+    glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 2);
+    glfw.window_hint(glfw.OPENGL_FORWARD_COMPAT, gl.TRUE);
     glfw.window_hint(glfw.OPENGL_PROFILE, cast(int) glfw.OPENGL_CORE_PROFILE);
+	glfw.make_context_current(window);
 	
-	gl.load_up_to(3, 3, glfw.set_proc_address);
+	gl.load_up_to(3, 2, glfw.set_proc_address);
 	
     // shader loading and setting up
 	primitive_shader := init_shader("shaders/primitive.vert", "shaders/primitive.frag");
