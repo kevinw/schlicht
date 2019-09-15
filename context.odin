@@ -62,10 +62,9 @@ init_context :: proc(title: string, width, height: int, offset: Vec2 = {}) {
         
         //fmt.println(scale);
         
-        //projection := ortho3d(0, cast(f32) width, cast(f32) height, 0, -1.0, 1.0);
+        projection := ortho3d(0, cast(f32) width, cast(f32) height, 0, -1.0, 1.0);
         gl.UseProgram(global_context.primitive_shader.program);
-        gl.UniformMatrix4fv(global_context.primitive_shader.
-                            projection, 1, gl.FALSE, &projection[0][0]);
+        gl.UniformMatrix4fv(global_context.primitive_shader.projection, 1, gl.FALSE, &projection[0][0]);
     }
 	glfw.set_window_size_callback(window, resize_callback);
 	
