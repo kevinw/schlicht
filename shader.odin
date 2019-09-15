@@ -10,7 +10,7 @@ Shader :: struct {
 
 init_shader :: proc(vertex, fragment: string) -> Shader {
 	// shader loading
-	program, success := gl.load_shaders_file(vertex, fragment);
+	program, success := gl.load_shaders_source(vertex, fragment);
 	
 	// fails at runtime and displays error
 	if !success do panic("shader loading failed, maybe it didnt find the file or couldnt compile the shader");

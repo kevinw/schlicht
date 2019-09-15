@@ -77,7 +77,7 @@ init_context :: proc(title: string, width, height: int, offset: Vec2 = {}) {
 	gl.load_up_to(3, 2, glfw.set_proc_address);
 	
     // shader loading and setting up
-	primitive_shader := init_shader("shaders/primitive.vert", "shaders/primitive.frag");
+	primitive_shader := init_shader(primitive_shader_vert, primitive_shader_frag);
 	
     projection := ortho3d(0, cast(f32) width, cast(f32) height, 0, -1.0, 1.0);
 	gl.UseProgram(primitive_shader.program);
@@ -237,7 +237,77 @@ destroy_context :: proc() {
 }
 
 
-////////////////////////////////
+//////////////////////////////// SHADERS
+
+
+// multiline strings for all shaders used in schlicht
+primitive_shader_vert :: `
+#version 320 es
+
+layout (location = 0) in vec2 i_pos;
+layout (location = 1) in vec2 i_uv;
+
+uniform mat4 model;
+uniform mat4 projection;
+uniform mat4 view;
+
+out vec2 o_uv;
+
+void main() {
+	gl_Position = projection * view * model * vec4(i_pos, 0.0f, 1.0f);
+	o_uv = i_uv;
+}
+`;
+
+primitive_shader_frag :: `
+#version 320 es
+
+lowp in vec2 o_uv;
+lowp out vec4 frag_color;
+
+uniform sampler2D image;
+lowp uniform vec4 color;
+
+void main() {
+	lowp vec4 finished_color = texture(image, o_uv) * color;
+	
+	// alpha sorting
+	if (finished_color.a < 0.1) {
+        discard;
+	}
+	
+	frag_color = finished_color;
+}`; 
+
+text_shader_vert :: ` 
+#version 320 es
+
+layout (location = 0) in vec4 i_vertex; // <vec2 pos, vec2 tex>
+out vec2 o_uv;
+
+uniform mat4 projection;
+
+void main() {
+    gl_Position = projection * vec4(i_vertex.xy, 0.0, 1.0);
+    o_uv = i_vertex.zw;
+}`;
+
+text_shader_frag :: ` 
+#version 320 es
+
+lowp in vec2 o_uv;
+lowp out vec4 frag_color;
+
+uniform sampler2D text;
+lowp uniform vec3 text_color;
+
+void main() {    
+    lowp vec4 sampled_color = vec4(1.0, 1.0, 1.0, texture(text, o_uv).r);
+    frag_color = vec4(text_color, 1.0) * sampled_color;
+}`;
+
+
+//////////////////////////////// MOUSE
 
 
 // wrapper around global context to get the current mouse pos

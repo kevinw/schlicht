@@ -64,7 +64,7 @@ read_ttf :: proc(file_name: string) {
     using stbtt;
     
     // load text shader 
-    program, program_success := gl.load_shaders_file("shaders/text.vert", "shaders/text.frag");
+    program, program_success := gl.load_shaders_file(text_shader_vert, text_shader_frag);
     
     if !program_success do panic("TTF: Shader failed loading");
     
