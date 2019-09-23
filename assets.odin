@@ -55,7 +55,7 @@ load_all_textures :: proc(files: ..string) {
 destroy_assets :: proc() {
 	using global_assets;
 	
-	for key, i in textures {
+	for key in textures {
 		copy_of_id := textures[key].id;
         unload_texture(&copy_of_id);
     }
