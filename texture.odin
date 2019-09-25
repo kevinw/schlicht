@@ -1,6 +1,7 @@
 package schlicht
 
 using import "core:math"
+import "core:strings"
 import gl "shared:odin-gl"
 import "shared:odin-stb/stbi"
 
@@ -18,8 +19,9 @@ Image :: struct {
 init_image :: proc(file_name: string) -> Image {
 	image: Image;
 	
-	c_file_name := cast([]u8) file_name;
-	image.data = stbi.load(&c_file_name[0], &image.width, &image.height, &image.channels, 0);
+	c_file_name := strings.clone_to_cstring(file_name, context.temp_allocator);
+
+	image.data = stbi.load(cast(^u8)c_file_name, &image.width, &image.height, &image.channels, 0);
 	
 	return image;
     
