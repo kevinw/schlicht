@@ -64,7 +64,7 @@ read_ttf :: proc(file_name: string) {
     using stbtt;
     
     // load text shader 
-    program, program_success := gl.load_shaders_file(text_shader_vert, text_shader_frag);
+    program, program_success := gl.load_shaders_source(text_shader_vert, text_shader_frag);
     
     if !program_success do panic("TTF: Shader failed loading");
     
@@ -83,7 +83,7 @@ read_ttf :: proc(file_name: string) {
     font_info: stbtt_fontinfo = ---;
     if !init_font(&font_info, font_data, 0) do panic("TTF: font couldnt init"); 
     */
-    
+
     font_atlas_data := make([]u8, font_atlas_width * font_atlas_height);
     defer delete(font_atlas_data);
     
@@ -103,7 +103,8 @@ read_ttf :: proc(file_name: string) {
     gl.GenTextures(1, &font_texture);
     gl.BindTexture(gl.TEXTURE_2D, font_texture);
     gl.PixelStorei(gl.UNPACK_ALIGNMENT, 1);
-    gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGB, cast(i32) font_atlas_width, cast(i32) font_atlas_height, 0, gl.RED, gl.UNSIGNED_BYTE, &font_atlas_data);
+
+    gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGB, cast(i32) font_atlas_width, cast(i32) font_atlas_height, 0, gl.RED, gl.UNSIGNED_BYTE, &font_atlas_data[0]);
     
     //gl.Hint(gl.GENERATE_MIPMAP_HINT, gl.NICEST);
     //gl.GenerateMipmap(gl.TEXTURE_2D);
